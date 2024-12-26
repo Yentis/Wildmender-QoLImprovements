@@ -12,12 +12,15 @@ namespace WildmenderMod
             MODNAME = "QoLImprovements",
             AUTHOR = "Yentis",
             GUID = "com." + AUTHOR + "." + MODNAME,
-            VERSION = "1.0.0";
+            VERSION = "1.1.0";
 
         internal static new ManualLogSource Logger;
 
         public const bool DEFAULT_PLANT_TIREDNESS = false;
+        public const bool DEFAULT_CHEATS = false;
+
         public static ConfigEntry<bool> configPlantTiredness;
+        public static ConfigEntry<bool> configCheats;
 
         private void Awake()
         {
@@ -31,10 +34,18 @@ namespace WildmenderMod
                 description: "Do plants get tired?"
             );
 
+            configCheats = Config.Bind(
+                section: "General",
+                key: "Cheats",
+                defaultValue: DEFAULT_CHEATS,
+                description: "Enable cheats? Press F8 ingame to open cheat menu."
+            );
+
             BedrollSleepPatch.Patch(harmony);
             FrogImprovementPatch.Patch(harmony);
             PlantTirednessPatch.Patch(harmony);
             DepositDestroyItemsPatch.Patch(harmony);
+            CheatPatch.Patch(harmony);
 
             Logger.LogInfo($"Plugin {GUID} is loaded!");
         }
